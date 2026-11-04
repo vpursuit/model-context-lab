@@ -53,7 +53,9 @@ export function pathExists(filePath: string): boolean {
  * Get the directory where the current module is running from.
  *
  * This function handles multiple execution contexts:
- * - Production: Uses process.argv[1] (entry script location)
+ * - Production: Uses the real path of process.argv[1] (entry script location).
+ *   npx and global installs start the entry script through the symlink
+ *   node_modules/.bin/<name>; resources must be located relative to the real file.
  * - Test runners: Detects vitest/jest/mocha and uses process.cwd()
  * - Falls back to process.cwd() if script path is unavailable
  *
@@ -74,12 +76,21 @@ export function getCurrentDir(): string {
       return process.cwd();
     }
 
-    // Normal execution - use script directory
-    return path.dirname(scriptPath);
+    // Normal execution - use the directory of the real script file
+    return path.dirname(realPathOrSelf(scriptPath));
   }
 
   // Last resort fallback to current working directory
   return process.cwd();
+}
+
+/** Resolve symlinks in `filePath`; return it unchanged if it cannot be resolved. */
+function realPathOrSelf(filePath: string): string {
+  try {
+    return fs.realpathSync(filePath);
+  } catch {
+    return filePath;
+  }
 }
 
 /**
