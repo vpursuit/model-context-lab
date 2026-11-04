@@ -4,6 +4,27 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.0.1] - 2026-11-04
+
+### Security
+
+- Update `@modelcontextprotocol/sdk` 1.21.0 -> 1.32.2. Resolves the SDK advisories reported by `npm audit`, including CVE-2026-25536 (cross-client data leak) and CVE-2026-0621 (ReDoS in `UriTemplate`), and the transitive findings in `proxy-addr`, `qs`, `path-to-regexp` and `fast-uri`.
+- Update `zod` 3.25 -> 4.6.7 (GHSA-mrhx-c7xc-m3w5, memory exhaustion on oversized constrained collections). `npm audit --omit=dev` reports no vulnerabilities.
+
+### Changed
+
+- **Requires Node.js 22 or newer.** Node.js 20 is end of life and does not receive the fix for CVE-2026-111497.
+- Tool input schemas no longer declare `additionalProperties: false`. Runtime behaviour is unchanged: undeclared arguments were and are stripped, not rejected. Output schemas are unchanged.
+- Server capabilities are passed as server options; they were previously passed in the implementation info, where the SDK ignored them.
+
+### Fixed
+
+- Server failed to start through `npx` with "Prolog server script not found" (3.0.1-beta.10). Resource lookup now resolves the `node_modules/.bin` symlink.
+
+### Documentation
+
+- Corrected the `claude mcp add` commands and described how Claude Code provides filesystem roots.
+
 ## [3.0.1-beta.8] - 2025-11-04
 
 ### BREAKING CHANGES
