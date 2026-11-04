@@ -26,10 +26,7 @@ Configure roots directly in your MCP client configuration. The server discovers 
 }
 ```
 
-**Claude Code CLI:**
-```bash
-claude mcp add swipl-mcp-server npx @vpursuit/swipl-mcp-server --roots /Users/you/prolog,/Users/you/knowledge
-```
+**Claude Code CLI:** `claude mcp add` has no option for roots. Use the environment variable instead (Option 2).
 
 **Advantages:**
 - Native MCP protocol support
@@ -53,6 +50,11 @@ Set `SWI_MCP_ALLOWED_ROOTS` with comma-separated absolute paths:
     }
   }
 }
+```
+
+**Claude Code CLI:**
+```bash
+claude mcp add --env SWI_MCP_ALLOWED_ROOTS=/Users/you/prolog,/Users/you/knowledge --transport stdio swipl-mcp-server -- npx -y @vpursuit/swipl-mcp-server
 ```
 
 **Use Cases:**
