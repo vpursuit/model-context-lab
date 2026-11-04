@@ -31,7 +31,7 @@
     "clean": "npm run clean --workspaces --if-present",
     "clean:full": "npm run clean --workspaces --if-present && rm -rf node_modules products/*/node_modules plugins/*/node_modules plugins/*/*/node_modules",
     "security:audit": "npm audit --workspaces --audit-level=moderate",
-    "security:check": "npm audit --workspaces --audit-level=high --json | jq -r '.vulnerabilities | length' | xargs -I {} test {} -eq 0",
+    "security:check": "npm audit --workspaces --json | jq -e '[.vulnerabilities[] | select(.severity == \"high\" or .severity == \"critical\")] | length == 0' > /dev/null",
     "security:update": "npm update --workspaces && npm audit fix --workspaces",
     "changelog": "node scripts/generate-changelog.js",
     "preversion": "npm run changelog && git add CHANGELOG.md",

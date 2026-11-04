@@ -64,23 +64,17 @@ describe("JSON Schemas (MCP registration)", () => {
     expect(knowledgeBaseRetractMany.properties.facts.items.type).toBe("string");
   });
 
-  it("knowledgeBaseClear should have no parameters", () => {
-    const knowledgeBaseClear = jsonSchemas.knowledgeBaseClear as any;
-    expect(knowledgeBaseClear.type).toBe("object");
-    expect(knowledgeBaseClear.properties).toEqual({});
-    expect(knowledgeBaseClear.additionalProperties).toBe(false);
-  });
-
-  it("empty-input tools should forbid additionalProperties", () => {
-    const emptyish = [
-      jsonSchemas.queryNext,
-      jsonSchemas.queryClose,
+  it("empty-input tools should declare no parameters", () => {
+    const emptyInputSchemas = [
       jsonSchemas.queryNext,
       jsonSchemas.queryClose,
       jsonSchemas.symbolsList,
+      jsonSchemas.knowledgeBaseClear,
     ] as any[];
-    for (const sch of emptyish) {
-      expect(sch).toMatchObject({ type: "object", properties: {}, additionalProperties: false });
+    for (const sch of emptyInputSchemas) {
+      expect(sch).toMatchObject({ type: "object", properties: {} });
+      // Input schemas do not forbid extra keys: Zod strips undeclared arguments instead of rejecting them.
+      expect(sch.additionalProperties).toBeUndefined();
     }
   });
 });

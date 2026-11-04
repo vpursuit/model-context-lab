@@ -134,7 +134,7 @@ export class RootsManager {
       );
 
       logger.info("✅ Successfully registered roots/list_changed notification handler");
-      logger.debug(`Handler registered for method: ${(RootsListChangedNotificationSchema.shape.method as any)._def.value}`);
+      logger.debug(`Handler registered for method: ${RootsListChangedNotificationSchema.shape.method.value}`);
       this.notificationsRegistered = true;
     } catch (error) {
       logger.error(`❌ Could not register notification handler`, error instanceof Error ? error : new Error(String(error)));
