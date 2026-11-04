@@ -246,9 +246,11 @@ class NPXIntegrationTest {
 
   async runMCPCommand(request) {
     return new Promise((resolve, reject) => {
-      // Run from clean directory that doesn't have source files
-      // This simulates real user environment
-      const child = spawn('node', [path.join(this.tempDir, 'node_modules', '@vpursuit', 'swipl-mcp-server', 'dist', 'index.js')], {
+      // Start through the bin symlink in node_modules/.bin, as npx does: process.argv[1]
+      // is then the symlink path, not the real path inside the package.
+      // Run from a clean directory that doesn't have source files (real user environment).
+      const binLink = path.join(this.tempDir, 'node_modules', '.bin', 'swipl-mcp-server');
+      const child = spawn('node', [binLink], {
         cwd: '/tmp',  // Clean directory, no access to development files
         env: {
           ...process.env,
