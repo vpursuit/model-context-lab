@@ -127,9 +127,8 @@ describe("Plugin Loader", () => {
       expect(config.argsSchema).toBeDefined();
       expect(config.argsSchema.task).toBeDefined();
 
-      // Verify the task schema has Zod schema properties
-      expect(config.argsSchema.task._def).toBeDefined(); // Zod schemas have _def
-      expect(config.argsSchema.task._def.description).toBe("Task description");
+      // Verify the argument description reaches the Zod schema
+      expect(config.argsSchema.task.description).toBe("Task description");
 
       expect(handler).toBeTypeOf("function");
     });

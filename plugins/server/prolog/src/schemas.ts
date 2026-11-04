@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { zodToJsonSchema } from "zod-to-json-schema";
 
 /**
  * Zod schemas for Prolog plugin tools and prompts
@@ -234,30 +233,36 @@ export const zodSchemas = {
 } as const;
 
 /**
- * JSON schemas for MCP tool registration
- * Converted from Zod schemas for backward compatibility
- * We wrap raw shapes in z.object() for JSON schema conversion
+ * JSON Schema of a raw shape, converted with the same options the MCP SDK uses
+ * for tools/list (draft-7, input side), so it matches what clients receive.
+ */
+function toClientJsonSchema(shape: z.ZodRawShape) {
+  return z.toJSONSchema(z.object(shape), { target: "draft-7", io: "input" });
+}
+
+/**
+ * JSON schemas of all tool and prompt inputs as MCP clients see them.
  */
 export const jsonSchemas = {
-  help: zodToJsonSchema(z.object(helpSchema)),
-  knowledgeBaseLoad: zodToJsonSchema(z.object(knowledgeBaseLoadSchema)),
-  queryStart: zodToJsonSchema(z.object(queryStartSchema)),
-  queryNext: zodToJsonSchema(z.object(queryNextSchema)),
-  queryClose: zodToJsonSchema(z.object(queryCloseSchema)),
-  queryStartEngine: zodToJsonSchema(z.object(queryStartEngineSchema)),
-  knowledgeBaseDump: zodToJsonSchema(z.object(knowledgeBaseDumpSchema)),
-  symbolsList: zodToJsonSchema(z.object(symbolsListSchema)),
-  knowledgeBaseAssert: zodToJsonSchema(z.object(knowledgeBaseAssertSchema)),
-  knowledgeBaseRetract: zodToJsonSchema(z.object(knowledgeBaseRetractSchema)),
-  knowledgeBaseAssertMany: zodToJsonSchema(z.object(knowledgeBaseAssertManySchema)),
-  knowledgeBaseRetractMany: zodToJsonSchema(z.object(knowledgeBaseRetractManySchema)),
-  knowledgeBaseClear: zodToJsonSchema(z.object(knowledgeBaseClearSchema)),
-  knowledgeBaseLoadLibrary: zodToJsonSchema(z.object(knowledgeBaseLoadLibrarySchema)),
-  capabilities: zodToJsonSchema(z.object(capabilitiesSchema)),
-  license: zodToJsonSchema(z.object(licenseSchema)),
-  explainError: zodToJsonSchema(z.object(explainErrorSchema)),
-  genealogy: zodToJsonSchema(z.object(genealogySchema)),
-  scheduling: zodToJsonSchema(z.object(schedulingSchema)),
-  puzzle: zodToJsonSchema(z.object(puzzleSchema)),
-  grammar: zodToJsonSchema(z.object(grammarSchema)),
+  help: toClientJsonSchema(helpSchema),
+  knowledgeBaseLoad: toClientJsonSchema(knowledgeBaseLoadSchema),
+  queryStart: toClientJsonSchema(queryStartSchema),
+  queryNext: toClientJsonSchema(queryNextSchema),
+  queryClose: toClientJsonSchema(queryCloseSchema),
+  queryStartEngine: toClientJsonSchema(queryStartEngineSchema),
+  knowledgeBaseDump: toClientJsonSchema(knowledgeBaseDumpSchema),
+  symbolsList: toClientJsonSchema(symbolsListSchema),
+  knowledgeBaseAssert: toClientJsonSchema(knowledgeBaseAssertSchema),
+  knowledgeBaseRetract: toClientJsonSchema(knowledgeBaseRetractSchema),
+  knowledgeBaseAssertMany: toClientJsonSchema(knowledgeBaseAssertManySchema),
+  knowledgeBaseRetractMany: toClientJsonSchema(knowledgeBaseRetractManySchema),
+  knowledgeBaseClear: toClientJsonSchema(knowledgeBaseClearSchema),
+  knowledgeBaseLoadLibrary: toClientJsonSchema(knowledgeBaseLoadLibrarySchema),
+  capabilities: toClientJsonSchema(capabilitiesSchema),
+  license: toClientJsonSchema(licenseSchema),
+  explainError: toClientJsonSchema(explainErrorSchema),
+  genealogy: toClientJsonSchema(genealogySchema),
+  scheduling: toClientJsonSchema(schedulingSchema),
+  puzzle: toClientJsonSchema(puzzleSchema),
+  grammar: toClientJsonSchema(grammarSchema),
 } as const;
