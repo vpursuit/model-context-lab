@@ -14,12 +14,11 @@
     "plugin-system"
   ],
   "workspaces": [
-    "products/*",
-    "plugins/server/*",
-    "plugins/client/*"
+    "products/swipl-mcp-server",
+    "plugins/server/*"
   ],
   "scripts": {
-    "build": "npm run build --workspace=@vpursuit/mcp-host && npm run build --workspace=@vpursuit/swipl-mcp-server",
+    "build": "npm run build --workspace=@vpursuit/swipl-mcp-server",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -56,7 +55,7 @@
     "url": "https://github.com/vpursuit/model-context-lab/issues"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.0.0"
   },
   "devDependencies": {
     "@types/node": "^24.9.1",

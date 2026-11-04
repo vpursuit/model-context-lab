@@ -12,6 +12,15 @@ import type { ResourceDefinitions, ReadResourceResult } from "@vpursuit/mcp-serv
 import { findNearestFile } from "@vpursuit/mcp-server-core";
 import { prologInterface, getCapabilitiesSummary, tools } from "./tools.js";
 
+/** Text of the first content block of a tool result, or `fallback` if it is not a text block. */
+function firstTextContent(res: { content?: unknown }, fallback: string): string {
+  const first: unknown = Array.isArray(res.content) ? res.content[0] : undefined;
+  if (typeof first === "object" && first !== null && "text" in first && typeof first.text === "string") {
+    return first.text;
+  }
+  return fallback;
+}
+
 /**
  * Helper function to convert Prolog list string to readable format
  */
@@ -89,9 +98,7 @@ export const resources: ResourceDefinitions = {
     mimeType: "text/plain",
     handler: async (uri, _extra): Promise<ReadResourceResult> => {
       const res = await tools.help.handler({}, _extra);
-      const text = (Array.isArray(res.content) && res.content[0]?.text
-        ? res.content[0].text
-        : "Help unavailable") as string;
+      const text = firstTextContent(res, "Help unavailable");
 
       return {
         contents: [{
@@ -113,9 +120,7 @@ export const resources: ResourceDefinitions = {
     mimeType: "text/plain",
     handler: async (uri, _extra): Promise<ReadResourceResult> => {
       const res = await tools.license.handler({}, _extra);
-      const text = (Array.isArray(res.content) && res.content[0]?.text
-        ? res.content[0].text
-        : "License unavailable") as string;
+      const text = firstTextContent(res, "License unavailable");
 
       return {
         contents: [{

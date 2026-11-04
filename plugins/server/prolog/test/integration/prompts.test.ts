@@ -44,7 +44,7 @@ function createTestServer() {
         {
           title: promptConfig.title,
           description: promptConfig.description,
-          argsSchema: (testSchemas as any)[schemaName]
+          argsSchema: (testSchemas as any)[schemaName].shape
         },
         async (args: Record<string, unknown>) => {
           const stringArgs = Object.fromEntries(
