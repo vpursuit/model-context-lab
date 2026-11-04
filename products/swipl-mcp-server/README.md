@@ -60,8 +60,10 @@ A MCP server that lets tools-enabled LLMs work directly with SWI‑Prolog. It su
 
 ### Claude Code CLI
 ```bash
-claude mcp add swipl-mcp-server npx @vpursuit/swipl-mcp-server
+claude mcp add --transport stdio swipl-mcp-server -- npx -y @vpursuit/swipl-mcp-server
 ```
+
+Everything after `--` is passed to the server command unchanged. Add `--scope user` before the server name to make the server available in all your projects.
 
 **Verification:**
 ```bash
